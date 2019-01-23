@@ -1,0 +1,546 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Pontaj_ATMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Angajati">
+          <Key>
+            <PropertyRef Name="ID_Angajat" />
+          </Key>
+          <Property Name="ID_Angajat" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Nume" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prenume" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ID_Functie" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Functii">
+          <Key>
+            <PropertyRef Name="ID_Functie" />
+          </Key>
+          <Property Name="ID_Functie" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Denumire" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Salariu_per_Ora" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Planficare">
+          <Key>
+            <PropertyRef Name="ID_Planificare" />
+          </Key>
+          <Property Name="ID_Planificare" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Angajat" Type="uniqueidentifier" />
+          <Property Name="ID_Schimb" Type="int" />
+          <Property Name="Data" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pontaj">
+          <Key>
+            <PropertyRef Name="ID_Pontaj" />
+          </Key>
+          <Property Name="ID_Pontaj" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Angajat" Type="uniqueidentifier" />
+          <Property Name="Clock_In" Type="varchar" MaxLength="50" />
+          <Property Name="Clock_Out" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Schimburi">
+          <Key>
+            <PropertyRef Name="ID_Schimb" />
+          </Key>
+          <Property Name="ID_Schimb" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Interval" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SchimburiFunctie">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Functie" Type="int" />
+          <Property Name="ID_Schimb" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK__Planficar__ID_An__22AA2996">
+          <End Role="Angajati" Type="Self.Angajati" Multiplicity="0..1" />
+          <End Role="Planficare" Type="Self.Planficare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Angajati">
+              <PropertyRef Name="ID_Angajat" />
+            </Principal>
+            <Dependent Role="Planficare">
+              <PropertyRef Name="ID_Angajat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Planficar__ID_Sc__239E4DCF">
+          <End Role="Schimburi" Type="Self.Schimburi" Multiplicity="0..1" />
+          <End Role="Planficare" Type="Self.Planficare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schimburi">
+              <PropertyRef Name="ID_Schimb" />
+            </Principal>
+            <Dependent Role="Planficare">
+              <PropertyRef Name="ID_Schimb" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pontaj__ID_Angaj__3C69FB99">
+          <End Role="Angajati" Type="Self.Angajati" Multiplicity="0..1" />
+          <End Role="Pontaj" Type="Self.Pontaj" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Angajati">
+              <PropertyRef Name="ID_Angajat" />
+            </Principal>
+            <Dependent Role="Pontaj">
+              <PropertyRef Name="ID_Angajat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Schimburi__ID_Fu__1920BF5C">
+          <End Role="Functii" Type="Self.Functii" Multiplicity="0..1" />
+          <End Role="SchimburiFunctie" Type="Self.SchimburiFunctie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Functii">
+              <PropertyRef Name="ID_Functie" />
+            </Principal>
+            <Dependent Role="SchimburiFunctie">
+              <PropertyRef Name="ID_Functie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Schimburi__ID_Sc__1A14E395">
+          <End Role="Schimburi" Type="Self.Schimburi" Multiplicity="0..1" />
+          <End Role="SchimburiFunctie" Type="Self.SchimburiFunctie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schimburi">
+              <PropertyRef Name="ID_Schimb" />
+            </Principal>
+            <Dependent Role="SchimburiFunctie">
+              <PropertyRef Name="ID_Schimb" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Functie">
+          <End Role="Functii" Type="Self.Functii" Multiplicity="1" />
+          <End Role="Angajati" Type="Self.Angajati" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Functii">
+              <PropertyRef Name="ID_Functie" />
+            </Principal>
+            <Dependent Role="Angajati">
+              <PropertyRef Name="ID_Functie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="Pontaj_ATMModelStoreContainer">
+          <EntitySet Name="Angajati" EntityType="Self.Angajati" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Functii" EntityType="Self.Functii" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Planficare" EntityType="Self.Planficare" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pontaj" EntityType="Self.Pontaj" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schimburi" EntityType="Self.Schimburi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SchimburiFunctie" EntityType="Self.SchimburiFunctie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Planficar__ID_An__22AA2996" Association="Self.FK__Planficar__ID_An__22AA2996">
+            <End Role="Angajati" EntitySet="Angajati" />
+            <End Role="Planficare" EntitySet="Planficare" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Planficar__ID_Sc__239E4DCF" Association="Self.FK__Planficar__ID_Sc__239E4DCF">
+            <End Role="Schimburi" EntitySet="Schimburi" />
+            <End Role="Planficare" EntitySet="Planficare" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pontaj__ID_Angaj__3C69FB99" Association="Self.FK__Pontaj__ID_Angaj__3C69FB99">
+            <End Role="Angajati" EntitySet="Angajati" />
+            <End Role="Pontaj" EntitySet="Pontaj" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Schimburi__ID_Fu__1920BF5C" Association="Self.FK__Schimburi__ID_Fu__1920BF5C">
+            <End Role="Functii" EntitySet="Functii" />
+            <End Role="SchimburiFunctie" EntitySet="SchimburiFunctie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Schimburi__ID_Sc__1A14E395" Association="Self.FK__Schimburi__ID_Sc__1A14E395">
+            <End Role="Schimburi" EntitySet="Schimburi" />
+            <End Role="SchimburiFunctie" EntitySet="SchimburiFunctie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Functie" Association="Self.FK_Functie">
+            <End Role="Functii" EntitySet="Functii" />
+            <End Role="Angajati" EntitySet="Angajati" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Pontaj_ATMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Angajati">
+          <Key>
+            <PropertyRef Name="ID_Angajat" />
+          </Key>
+          <Property Name="ID_Angajat" Type="Guid" Nullable="false" />
+          <Property Name="Nume" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Prenume" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID_Functie" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Planficares" Relationship="Self.FK__Planficar__ID_An__22AA2996" FromRole="Angajati" ToRole="Planficare" />
+          <NavigationProperty Name="Functii" Relationship="Self.FK_Functie" FromRole="Angajati" ToRole="Functii" />
+          <NavigationProperty Name="Pontajs" Relationship="Pontaj_ATMModel.FK__Pontaj__ID_Angaj__3C69FB99" FromRole="Angajati" ToRole="Pontaj" />
+        </EntityType>
+        <EntityType Name="Functii">
+          <Key>
+            <PropertyRef Name="ID_Functie" />
+          </Key>
+          <Property Name="ID_Functie" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Denumire" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Salariu_per_Ora" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Angajatis" Relationship="Self.FK_Functie" FromRole="Functii" ToRole="Angajati" />
+          <NavigationProperty Name="SchimburiFuncties" Relationship="Self.FK__Schimburi__ID_Fu__1920BF5C" FromRole="Functii" ToRole="SchimburiFunctie" />
+        </EntityType>
+        <EntityType Name="Planficare">
+          <Key>
+            <PropertyRef Name="ID_Planificare" />
+          </Key>
+          <Property Name="ID_Planificare" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Angajat" Type="Guid" />
+          <Property Name="ID_Schimb" Type="Int32" />
+          <Property Name="Data" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Angajati" Relationship="Self.FK__Planficar__ID_An__22AA2996" FromRole="Planficare" ToRole="Angajati" />
+          <NavigationProperty Name="Schimburi" Relationship="Self.FK__Planficar__ID_Sc__239E4DCF" FromRole="Planficare" ToRole="Schimburi" />
+        </EntityType>
+        <EntityType Name="Schimburi">
+          <Key>
+            <PropertyRef Name="ID_Schimb" />
+          </Key>
+          <Property Name="ID_Schimb" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Interval" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Planficares" Relationship="Self.FK__Planficar__ID_Sc__239E4DCF" FromRole="Schimburi" ToRole="Planficare" />
+          <NavigationProperty Name="SchimburiFuncties" Relationship="Self.FK__Schimburi__ID_Sc__1A14E395" FromRole="Schimburi" ToRole="SchimburiFunctie" />
+        </EntityType>
+        <EntityType Name="SchimburiFunctie">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Functie" Type="Int32" />
+          <Property Name="ID_Schimb" Type="Int32" />
+          <NavigationProperty Name="Functii" Relationship="Self.FK__Schimburi__ID_Fu__1920BF5C" FromRole="SchimburiFunctie" ToRole="Functii" />
+          <NavigationProperty Name="Schimburi" Relationship="Self.FK__Schimburi__ID_Sc__1A14E395" FromRole="SchimburiFunctie" ToRole="Schimburi" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK__Planficar__ID_An__22AA2996">
+          <End Role="Angajati" Type="Self.Angajati" Multiplicity="0..1" />
+          <End Role="Planficare" Type="Self.Planficare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Angajati">
+              <PropertyRef Name="ID_Angajat" />
+            </Principal>
+            <Dependent Role="Planficare">
+              <PropertyRef Name="ID_Angajat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Functie">
+          <End Role="Functii" Type="Self.Functii" Multiplicity="1" />
+          <End Role="Angajati" Type="Self.Angajati" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Functii">
+              <PropertyRef Name="ID_Functie" />
+            </Principal>
+            <Dependent Role="Angajati">
+              <PropertyRef Name="ID_Functie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Schimburi__ID_Fu__1920BF5C">
+          <End Role="Functii" Type="Self.Functii" Multiplicity="0..1" />
+          <End Role="SchimburiFunctie" Type="Self.SchimburiFunctie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Functii">
+              <PropertyRef Name="ID_Functie" />
+            </Principal>
+            <Dependent Role="SchimburiFunctie">
+              <PropertyRef Name="ID_Functie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Planficar__ID_Sc__239E4DCF">
+          <End Role="Schimburi" Type="Self.Schimburi" Multiplicity="0..1" />
+          <End Role="Planficare" Type="Self.Planficare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schimburi">
+              <PropertyRef Name="ID_Schimb" />
+            </Principal>
+            <Dependent Role="Planficare">
+              <PropertyRef Name="ID_Schimb" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Schimburi__ID_Sc__1A14E395">
+          <End Role="Schimburi" Type="Self.Schimburi" Multiplicity="0..1" />
+          <End Role="SchimburiFunctie" Type="Self.SchimburiFunctie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schimburi">
+              <PropertyRef Name="ID_Schimb" />
+            </Principal>
+            <Dependent Role="SchimburiFunctie">
+              <PropertyRef Name="ID_Schimb" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Pontaj_ATMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Angajatis" EntityType="Self.Angajati" />
+          <EntitySet Name="Functiis" EntityType="Self.Functii" />
+          <EntitySet Name="Planficares" EntityType="Self.Planficare" />
+          <EntitySet Name="Schimburis" EntityType="Self.Schimburi" />
+          <EntitySet Name="SchimburiFuncties" EntityType="Self.SchimburiFunctie" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK__Planficar__ID_An__22AA2996" Association="Self.FK__Planficar__ID_An__22AA2996">
+            <End Role="Angajati" EntitySet="Angajatis" />
+            <End Role="Planficare" EntitySet="Planficares" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Functie" Association="Self.FK_Functie">
+            <End Role="Functii" EntitySet="Functiis" />
+            <End Role="Angajati" EntitySet="Angajatis" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Schimburi__ID_Fu__1920BF5C" Association="Self.FK__Schimburi__ID_Fu__1920BF5C">
+            <End Role="Functii" EntitySet="Functiis" />
+            <End Role="SchimburiFunctie" EntitySet="SchimburiFuncties" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Planficar__ID_Sc__239E4DCF" Association="Self.FK__Planficar__ID_Sc__239E4DCF">
+            <End Role="Schimburi" EntitySet="Schimburis" />
+            <End Role="Planficare" EntitySet="Planficares" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Schimburi__ID_Sc__1A14E395" Association="Self.FK__Schimburi__ID_Sc__1A14E395">
+            <End Role="Schimburi" EntitySet="Schimburis" />
+            <End Role="SchimburiFunctie" EntitySet="SchimburiFuncties" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(Pontaj_ATMModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(Pontaj_ATMModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="Pontajs" EntityType="Pontaj_ATMModel.Pontaj" />
+          <AssociationSet Name="FK__Pontaj__ID_Angaj__3C69FB99" Association="Pontaj_ATMModel.FK__Pontaj__ID_Angaj__3C69FB99">
+            <End Role="Angajati" EntitySet="Angajatis" />
+            <End Role="Pontaj" EntitySet="Pontajs" />
+          </AssociationSet>
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Pontaj">
+          <Key>
+            <PropertyRef Name="ID_Pontaj" />
+          </Key>
+          <Property Name="ID_Pontaj" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Angajat" Type="Guid" />
+          <Property Name="Clock_In" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Clock_Out" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Angajati" Relationship="Pontaj_ATMModel.FK__Pontaj__ID_Angaj__3C69FB99" FromRole="Pontaj" ToRole="Angajati" />
+        </EntityType>
+        <Association Name="FK__Pontaj__ID_Angaj__3C69FB99">
+          <End Type="Pontaj_ATMModel.Angajati" Role="Angajati" Multiplicity="0..1" />
+          <End Type="Pontaj_ATMModel.Pontaj" Role="Pontaj" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Angajati">
+              <PropertyRef Name="ID_Angajat" />
+            </Principal>
+            <Dependent Role="Pontaj">
+              <PropertyRef Name="ID_Angajat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Pontaj_ATMModelStoreContainer" CdmEntityContainer="Pontaj_ATMEntities">
+          <EntitySetMapping Name="Angajatis">
+            <EntityTypeMapping TypeName="Pontaj_ATMModel.Angajati">
+              <MappingFragment StoreEntitySet="Angajati">
+                <ScalarProperty Name="ID_Angajat" ColumnName="ID_Angajat" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+                <ScalarProperty Name="ID_Functie" ColumnName="ID_Functie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Functiis">
+            <EntityTypeMapping TypeName="Pontaj_ATMModel.Functii">
+              <MappingFragment StoreEntitySet="Functii">
+                <ScalarProperty Name="ID_Functie" ColumnName="ID_Functie" />
+                <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+                <ScalarProperty Name="Salariu_per_Ora" ColumnName="Salariu_per_Ora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Planficares">
+            <EntityTypeMapping TypeName="Pontaj_ATMModel.Planficare">
+              <MappingFragment StoreEntitySet="Planficare">
+                <ScalarProperty Name="ID_Planificare" ColumnName="ID_Planificare" />
+                <ScalarProperty Name="ID_Angajat" ColumnName="ID_Angajat" />
+                <ScalarProperty Name="ID_Schimb" ColumnName="ID_Schimb" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schimburis">
+            <EntityTypeMapping TypeName="Pontaj_ATMModel.Schimburi">
+              <MappingFragment StoreEntitySet="Schimburi">
+                <ScalarProperty Name="ID_Schimb" ColumnName="ID_Schimb" />
+                <ScalarProperty Name="Interval" ColumnName="Interval" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchimburiFuncties">
+            <EntityTypeMapping TypeName="Pontaj_ATMModel.SchimburiFunctie">
+              <MappingFragment StoreEntitySet="SchimburiFunctie">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Functie" ColumnName="ID_Functie" />
+                <ScalarProperty Name="ID_Schimb" ColumnName="ID_Schimb" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Pontaj_ATMModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Pontaj_ATMModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Pontaj_ATMModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Pontaj_ATMModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Pontaj_ATMModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Pontaj_ATMModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Pontaj_ATMModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Pontaj_ATMModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Pontaj_ATMModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Pontaj_ATMModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="Pontajs">
+            <EntityTypeMapping TypeName="Pontaj_ATMModel.Pontaj">
+              <MappingFragment StoreEntitySet="Pontaj">
+                <ScalarProperty Name="Clock_Out" ColumnName="Clock_Out" />
+                <ScalarProperty Name="Clock_In" ColumnName="Clock_In" />
+                <ScalarProperty Name="ID_Angajat" ColumnName="ID_Angajat" />
+                <ScalarProperty Name="ID_Pontaj" ColumnName="ID_Pontaj" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

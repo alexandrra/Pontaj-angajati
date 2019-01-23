@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="32949a6eb2f447a3b864ae76dff5d0a0" Name="Diagram1">
+        <EntityTypeShape EntityType="Pontaj_ATMModel.Angajati" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Pontaj_ATMModel.Functii" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Pontaj_ATMModel.Planficare" Width="1.5" PointX="8.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Pontaj_ATMModel.Schimburi" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Pontaj_ATMModel.SchimburiFunctie" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Pontaj_ATMModel.sysdiagram" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="Pontaj_ATMModel.FK__Planficar__ID_An__22AA2996" ManuallyRouted="false" />
+        <AssociationConnector Association="Pontaj_ATMModel.FK_Functie" ManuallyRouted="false" />
+        <AssociationConnector Association="Pontaj_ATMModel.FK__Schimburi__ID_Fu__1920BF5C" ManuallyRouted="false" />
+        <AssociationConnector Association="Pontaj_ATMModel.FK__Planficar__ID_Sc__239E4DCF" ManuallyRouted="false" />
+        <AssociationConnector Association="Pontaj_ATMModel.FK__Schimburi__ID_Sc__1A14E395" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Pontaj_ATMModel.Pontaj" Width="1.5" PointX="5.25" PointY="7.625" />
+        <AssociationConnector Association="Pontaj_ATMModel.FK__Pontaj__ID_Angaj__3C69FB99" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

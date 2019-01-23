@@ -1,0 +1,17 @@
+﻿<Window x:Class="tema.Verification"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:tema"
+        mc:Ignorable="d"
+        Title="Verification" Height="150" Width="350">
+    <Grid>
+
+        <TextBlock Grid.Column="1" Grid.Row="2" FontSize="20"
+                   
+                   Margin="10"
+                   Grid.ColumnSpan="2"/>
+        <DataGrid x:Name="Verificare" AutoGenerateColumns="True" Height="100" Width="300" ItemsSource="{Binding}" />
+    </Grid>
+</Window>
